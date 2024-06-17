@@ -10,11 +10,12 @@ namespace ugr::Core
 
 		bool IsDisconnected() const;
 		void StartUpThread();
-		bool loop = true;
+		SocketStatus status;
+		HANDLE hThread = NULL;
 	private:
 		static DWORD HandleClient(LPVOID);
 		Network::TCPSocket* sock;
-		HANDLE hThread = NULL;
-		SocketStatus status;
+		
+		
 	};
 }
