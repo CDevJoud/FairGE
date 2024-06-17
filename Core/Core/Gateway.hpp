@@ -15,7 +15,7 @@ namespace ugr::Core
 	private:
 		static DWORD WINAPI CheckIfClientDisconnected(LPVOID lpParam);
 		HANDLE hThread;
-		std::vector<std::shared_ptr<ClientHandler>> ClientHandlers;
+		std::vector<ClientHandler*> ClientHandlers;
 		std::mutex mtx;
 	};
 }

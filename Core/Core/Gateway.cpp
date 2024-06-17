@@ -11,7 +11,7 @@ namespace ugr::Core
 	{
 		this->ListenOn("192.168.1.110", 25565);
 		
-		this->hThread = CreateThread(NULL, NULL, Gateway::CheckIfClientDisconnected, this, NULL, NULL);
+		//this->hThread = CreateThread(NULL, NULL, Gateway::CheckIfClientDisconnected, this, NULL, NULL);
 		while (true)
 		{
 			Network::TCPSocket* sock = new Network::TCPSocket;
@@ -21,12 +21,13 @@ namespace ugr::Core
 				continue;
 			}
 			Logger::Msg("New Client Connected");
-			std::shared_ptr<ClientHandler> handler = std::make_shared<ClientHandler>(sock);
+			ClientHandler* handler = new ClientHandler(sock);
 			{
 				std::lock_guard<std::mutex> lock(mtx);
 				ClientHandlers.push_back(handler);
 			}
-			handler->StartUpThread();
+
+			//handler->StartUpThread();
 		}
 	}
 	DWORD __stdcall Gateway::CheckIfClientDisconnected(LPVOID lpParam)
@@ -36,12 +37,20 @@ namespace ugr::Core
 		{
 			std::lock_guard<std::mutex> lock(gy->mtx);
 			for (auto it = gy->ClientHandlers.begin(); it != gy->ClientHandlers.end(); ) 
+			{
 				if ((*it)->IsDisconnected()) 
-					it = gy->ClientHandlers.erase(it); 
-				else
+				{
+					// Clean up the handler
+					(*it)->loop = false;
+					delete* it;
+					it = gy->ClientHandlers.erase(it);
+				}
+				else {
 					++it;
-			std::this_thread::sleep_for(std::chrono::milliseconds(1));
+				}
+			}
 		}
+			Sleep(10);
 		return 0;
 	}
 }
