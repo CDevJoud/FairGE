@@ -28,7 +28,7 @@ namespace ugr::Network
 		if (listen(this->m_sock, SOMAXCONN) == -1)
 		{
 			String msg = "Oops, socket appears to be deaf, failed to listen to port ";
-			msg.append(std::to_wstring(25565));
+			msg.append(std::to_wstring(port));
 			Logger::Fatal(msg);
 			return Error;
 		}

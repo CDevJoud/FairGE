@@ -9,7 +9,7 @@ namespace ugr::Core
 	using namespace Debugger;
 	void Gateway::Run()
 	{
-		this->ListenOn("192.168.1.110", 25565);
+		this->ListenOn("192.168.0.134", 25565);
 		
 		//this->hThread = CreateThread(NULL, NULL, Gateway::CheckIfClientDisconnected, this, NULL, NULL);
 		while (true)
