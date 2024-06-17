@@ -10,6 +10,7 @@ namespace ugr::Core
 
 		bool IsDisconnected() const;
 		void StartUpThread();
+		bool loop = true;
 	private:
 		static DWORD HandleClient(LPVOID);
 		Network::TCPSocket* sock;

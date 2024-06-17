@@ -1,5 +1,6 @@
 #include "ClientHandler.hpp"
 #include "..\Debugger\Logger.hpp"
+#include "..\Network\Packet.hpp"
 
 namespace ugr::Core
 {
@@ -27,8 +28,19 @@ namespace ugr::Core
 		buffer.resize(64);
 		Uint64 r;
 		ch->status = ch->sock->Receive(buffer.data(), buffer.size(), r);
-		
-		AString jsonresponse = R"({
+		Network::Packet p = buffer;
+		while(ch->loop)
+		{
+			struct {
+				Int32 PacketID;
+				Int32 ProVersion;
+				AString ServerAddress;
+				Int32 IgnoredPort0;
+				Int32 IgnoredPort1;
+				Int32 State;
+			}HandShackePacket{};
+			p.UnpackWithFormat(&HandShackePacket, "Int32 Int32 AString Int32 Int32 Int32");
+			AString jsonresponse = R"({
     "version": {
         "name": "1.19.4",
         "protocol": 762
@@ -51,25 +63,22 @@ namespace ugr::Core
     "previewsChat": false
 }
 )";
-		
-		AString packet;
-		packet.push_back(0xD6);
-		packet.push_back(0x03);
-		packet.push_back(0x00);
-		packet.push_back(0xD5);
-		packet.push_back(0x03);
-		packet.append(jsonresponse);
 
-		ch->status = ch->sock->Send(packet.data(), packet.size());
+			AString packet;
+			packet.push_back(0xD6);
+			packet.push_back(0x03);
+			packet.push_back(0x00);
+			packet.push_back(0xD5);
+			packet.push_back(0x03);
+			packet.append(jsonresponse);
 
-
-		ch->sock->Receive(packet.data(), packet.size(), r);
-
+			ch->status = ch->sock->Send(packet.data(), packet.size());
+			if (ch->status != Done)
+				break;
+		}
 		Logger::Msg("Client Disconnected!");
-
 		ch->status = Disconnected;
-		
-		//delete ch;
+		ch->sock->Disconnect();
 		return 0;
 	}
 	
