@@ -1,4 +1,5 @@
 #include "Packet.hpp"
+#include <sstream>
 #include "..\Debugger\Logger.hpp"
 
 namespace ugr::Network
@@ -90,7 +91,7 @@ namespace ugr::Network
 			this->data.push_back(str[i]);
 	}
 
-	void Packet::UnpackWithFormat(void* data, AString format)
+	/*void Packet::UnpackWithFormat(void* data, AString format)
 	{
 		Int32 packetsize = GetInt32();
 		Byte* bData = reinterpret_cast<Byte*>(data);
@@ -124,12 +125,81 @@ namespace ugr::Network
 					bData[bIndex + i] = reinterpret_cast<char*>(&Astrval)[i];
 				bIndex += sizeof(Astrval);
 			}
+	}*/
+
+	void Packet::UnpackWithFormat(void* data, AString format) {
+		Int32 packetsize = GetInt32();
+		Byte* bData = reinterpret_cast<Byte*>(data);
+		std::istringstream iss(format);
+		std::vector<AString> cmd;
+		AString token;
+
+		while (iss >> token) {
+			cmd.push_back(token);
+		}
+
+		Int32 bIndex = 0;
+
+		for (const auto& i : cmd) {
+			if (i == "Int32") {
+				Int32 val = GetInt32();
+				std::memcpy(&bData[bIndex], &val, sizeof(Int32));
+				bIndex += sizeof(Int32);
+			}
+			else if (i == "AString") {
+				AString Astrval = GetAString();
+				std::memcpy(&bData[bIndex], &Astrval, sizeof(Astrval)); // +1 for null terminator
+				bIndex += sizeof(Astrval);
+			}
+			else if (i == "RString")
+			{
+				AString tmpstr = this->GetAString();
+				char* rstr = (char*)malloc(tmpstr.size() + 1);
+				memset(rstr, 0, tmpstr.size() + 1);
+				memcpy(rstr, tmpstr.c_str(), tmpstr.size() + 1);
+				memcpy(&bData[bIndex], &rstr, sizeof(rstr));
+				bIndex += sizeof(rstr);
+			}
+			else if (i == "Int16")
+			{
+				Int32 val = GetInt32(2);
+				std::memcpy(&bData[bIndex], &val, sizeof(Int32));
+				bIndex += sizeof(Int32);
+			}
+		}
 	}
 
 	void Packet::Build()
 	{
 		VarInt32 size = EncodeVarInt32(this->data.size() + 1);
-		this->data.insert(this->data.begin(), size.b1);
+		switch (strlen(reinterpret_cast<char*>(size.bytes)))
+		{
+		case 1:
+			this->data.insert(this->data.begin(), size.b1);
+			break;
+		case 2:
+			this->data.insert(this->data.begin(), size.b2);
+			this->data.insert(this->data.begin(), size.b1);
+			break;
+		case 3:
+			this->data.insert(this->data.begin(), size.b3);
+			this->data.insert(this->data.begin(), size.b2);
+			this->data.insert(this->data.begin(), size.b1);
+			break;
+		case 4:
+			this->data.insert(this->data.begin(), size.b4);
+			this->data.insert(this->data.begin(), size.b3);
+			this->data.insert(this->data.begin(), size.b2);
+			this->data.insert(this->data.begin(), size.b1);
+			break;
+		case 5:
+			this->data.insert(this->data.begin(), size.b5);
+			this->data.insert(this->data.begin(), size.b4);
+			this->data.insert(this->data.begin(), size.b3);
+			this->data.insert(this->data.begin(), size.b2);
+			this->data.insert(this->data.begin(), size.b1);
+			break;
+		}
 	}
 
 	bool Packet::CheckSize(Uint64 size)

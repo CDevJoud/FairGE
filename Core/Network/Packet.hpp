@@ -43,30 +43,63 @@ namespace ugr::Network
 		void UnpackWithFormat(void* data, AString format);
 
 		void Build();
-		Int32 GetInt32();
+		Int32 GetInt32(Int32 bytes = 0);
 		AString GetAString();
 	private:
 		bool CheckSize(Uint64 size);
 		std::vector<Byte> data;
-		Uint64 readPos, sendPos;
+		Uint64 readPos = 0, sendPos = 0;
 		bool isValid = true;
 	};
-	inline Int32 Packet::GetInt32()
+	inline Int32 Packet::GetInt32(Int32 bytes)
 	{
-		if (this->data.size() < 5)
+		if(bytes == 0)
 		{
-			VarInt32 tmp{};
-			for (int i = 0; i < this->data.size(); i++)
-				tmp.bytes[i] = this->data[i];
-			Int32 val = DecodeVarInt32(tmp, this->readPos);
-			return val;
+			if (this->data.size() < 5)
+			{
+				std::vector<Byte> tmpb(5);
+				tmpb.insert(tmpb.begin(), this->data.begin() + this->readPos, this->data.end());
+				Uint64 in = 0;
+				Int32 val = DecodeVarInt32(*reinterpret_cast<VarInt32*>(tmpb.data()), in);
+				this->readPos += in;
+				return val;
+			}
+			else
+			{
+				Uint64 in = 0;
+				Int32 val = DecodeVarInt32(*reinterpret_cast<VarInt32*>(this->data.data() + this->readPos), in);
+				this->readPos += in;
+				return val;
+			}
 		}
 		else
 		{
-			Uint64 in = 0;
-			Int32 val = DecodeVarInt32(*reinterpret_cast<VarInt32*>(this->data.data() + this->readPos), in);
-			this->readPos += in;
-			return val;
+			VarInt32 tmp{};
+			switch (bytes)
+			{
+			case 0:
+				break;
+			case 1:
+			{
+				tmp.b1 = this->data.data()[this->readPos];
+				Uint64 in = 0;
+				Int32 val = DecodeVarInt32(tmp, in);
+				this->readPos += in;
+				return val;
+			}
+			case 2:
+			{
+				tmp.b1 = this->data.data()[this->readPos++];
+				tmp.b2 = this->data.data()[this->readPos];
+				Uint64 in = 0;
+				Int32 val = DecodeVarInt32(tmp, in);
+				this->readPos += in;
+				return val;
+			}
+			default:
+				Logger::Error("The bytes You have specified is out of range!");
+				break;
+			}
 		}
 	}
 	inline AString Packet::GetAString()
