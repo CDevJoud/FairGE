@@ -76,6 +76,7 @@ namespace ugr
 		}
 	};
 	using AString = std::string;
+	using RString = char*;
 	enum SocketStatus
 	{
 		Error, NotReady, Disconnected, Done, Partial
