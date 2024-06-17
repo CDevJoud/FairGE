@@ -133,18 +133,22 @@
     <ClCompile Include="Debugger\Logger.cpp" />
     <ClCompile Include="Core\Gateway.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Network\Packet.cpp" />
     <ClCompile Include="Network\Socket.cpp" />
     <ClCompile Include="Network\TCPSocket.cpp" />
     <ClCompile Include="Network\TCPServer.cpp" />
+    <ClCompile Include="Utility.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\ClientHandler.hpp" />
     <ClInclude Include="Definitions.hpp" />
     <ClInclude Include="Debugger\Logger.hpp" />
     <ClInclude Include="Core\Gateway.hpp" />
+    <ClInclude Include="Network\Packet.hpp" />
     <ClInclude Include="Network\Socket.hpp" />
     <ClInclude Include="Network\TCPSocket.hpp" />
     <ClInclude Include="Network\TCPServer.hpp" />
+    <ClInclude Include="Utility.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

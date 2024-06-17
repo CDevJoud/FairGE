@@ -63,6 +63,12 @@
     <ClCompile Include="Core\ClientHandler.cpp">
       <Filter>Core\Src</Filter>
     </ClCompile>
+    <ClCompile Include="Utility.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Network\Packet.cpp">
+      <Filter>Network\Src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Network\Socket.hpp">
@@ -85,6 +91,12 @@
     </ClInclude>
     <ClInclude Include="Core\ClientHandler.hpp">
       <Filter>Core\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Network\Packet.hpp">
+      <Filter>Network\Inc</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
