@@ -11,7 +11,7 @@ namespace ugr::Core
 	{
 		this->ListenOn("192.168.0.134", 25565);
 		
-		//this->hThread = CreateThread(NULL, NULL, Gateway::CheckIfClientDisconnected, this, NULL, NULL);
+		this->hThread = CreateThread(NULL, NULL, Gateway::CheckIfClientDisconnected, this, NULL, NULL);
 		while (true)
 		{
 			Network::TCPSocket* sock = new Network::TCPSocket;
@@ -27,7 +27,7 @@ namespace ugr::Core
 				ClientHandlers.push_back(handler);
 			}
 
-			//handler->StartUpThread();
+			handler->StartUpThread();
 		}
 	}
 	DWORD __stdcall Gateway::CheckIfClientDisconnected(LPVOID lpParam)
@@ -41,7 +41,8 @@ namespace ugr::Core
 				if ((*it)->IsDisconnected()) 
 				{
 					// Clean up the handler
-					(*it)->loop = false;
+					/*(*it)->status = Disconnected;*/
+					WaitForSingleObject((*it)->hThread, 100);
 					delete* it;
 					it = gy->ClientHandlers.erase(it);
 				}
