@@ -25,9 +25,9 @@ namespace ugr::Network
 		void Close();
 		void Create();
 		void Create(SOCKET sock);
-
-	protected:
 		SOCKET m_sock;
+	protected:
+		
 
 	private:
 		Type m_type;
