@@ -1,6 +1,5 @@
 #pragma once
 #include "..\Definitions.hpp"
-#include <Windows.h>
 
 namespace ugr::Debugger
 {

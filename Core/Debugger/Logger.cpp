@@ -1,4 +1,5 @@
 #include "Logger.hpp"
+#include <Windows.h>
 namespace ugr::Debugger
 {
 
