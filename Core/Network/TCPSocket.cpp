@@ -123,4 +123,13 @@ namespace ugr::Network
 			return SocketImplementation::GetErrorStatus();
 		}
 	}
+	SocketStatus TCPSocket::Send(Packet& p)
+	{
+		Uint64 size = p.GetDataSize();
+		const void* data = p.GetData();
+
+		VarInt32 packetsize = EncodeVarInt32(size);
+		std::vector<Byte> buffer(sizeof(packetsize) + size);
+		return Done;
+	}
 }

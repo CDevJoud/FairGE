@@ -1,5 +1,6 @@
 #pragma once
 #include "Socket.hpp"
+#include "Packet.hpp"
 namespace ugr::Network
 {
 	class TCPSocket : public Socket
@@ -15,5 +16,9 @@ namespace ugr::Network
 		SocketStatus Send(const void* data, Uint64 size, Uint64& sent);
 
 		SocketStatus Receive(void* data, Uint64 size, Uint64& received);
+
+		SocketStatus Send(Packet& p);
+
+		SocketStatus Receive(Packet& p);
 	};
 }
