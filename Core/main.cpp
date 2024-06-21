@@ -9,7 +9,6 @@ using namespace ugr::Debugger;
 
 int main()
 {
-	//This is ClientResolver Branchs
 	Core::Gateway gw;
 	gw.Run();
 }
