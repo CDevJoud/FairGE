@@ -144,6 +144,7 @@
     <ClInclude Include="Definitions.hpp" />
     <ClInclude Include="Debugger\Logger.hpp" />
     <ClInclude Include="Core\Gateway.hpp" />
+    <ClInclude Include="json.hpp" />
     <ClInclude Include="Network\Packet.hpp" />
     <ClInclude Include="Network\Socket.hpp" />
     <ClInclude Include="Network\TCPSocket.hpp" />
