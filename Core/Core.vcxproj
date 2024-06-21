@@ -144,7 +144,10 @@
     <ClInclude Include="Definitions.hpp" />
     <ClInclude Include="Debugger\Logger.hpp" />
     <ClInclude Include="Core\Gateway.hpp" />
-    <ClInclude Include="json.hpp" />
+    <ClInclude Include="json.hpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="Network\Packet.hpp" />
     <ClInclude Include="Network\Socket.hpp" />
     <ClInclude Include="Network\TCPSocket.hpp" />
