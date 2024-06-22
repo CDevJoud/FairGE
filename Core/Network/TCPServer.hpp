@@ -11,6 +11,6 @@ namespace ugr::Network
 		SocketStatus ListenOn(const AString& IpAddress, Uint16 port);
 		void Close();
 
-		SocketStatus AcceptConnection(TCPSocket& sock);
+		SocketStatus AcceptConnection(TCPSocket& sock, float time = 0.0f);
 	};
 }
