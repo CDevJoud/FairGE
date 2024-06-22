@@ -125,11 +125,11 @@ namespace ugr::Network
 	}
 	SocketStatus TCPSocket::Send(Packet& p)
 	{
-		Uint64 size = p.GetDataSize();
-		const void* data = p.GetData();
-
-		VarInt32 packetsize = EncodeVarInt32(size);
-		std::vector<Byte> buffer(sizeof(packetsize) + size);
-		return Done;
+		return this->Send(p.GetBufferData(), p.GetBufferSize());
+	}
+	SocketStatus TCPSocket::Receive(Packet& p)
+	{
+		Uint64 r = 0;
+		return this->Receive(const_cast<void*>(p.GetBufferData()), p.GetBufferSize(), r);
 	}
 }
