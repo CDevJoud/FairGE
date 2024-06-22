@@ -1,6 +1,7 @@
 #pragma once
 #include "..\Network\TCPServer.hpp"
-#include"ClientHandler.hpp"
+#include "ClientVersionResolver.hpp"
+#include "..\Properties.hpp"
 #include <vector>
 #include <mutex>
 
@@ -15,7 +16,9 @@ namespace ugr::Core
 	private:
 		static DWORD WINAPI CheckIfClientDisconnected(LPVOID lpParam);
 		HANDLE hThread;
-		std::vector<ClientHandler*> ClientHandlers;
+		friend class Server;
+		//std::vector<ClientHandler*> ClientHandlers;
+		std::vector<ClientVersionResolver*> VersionResolvers;
 		std::mutex mtx;
 	};
 }
