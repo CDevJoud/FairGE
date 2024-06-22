@@ -13,7 +13,7 @@ namespace ugr::Core
 		SocketStatus status;
 		HANDLE hThread = NULL;
 	private:
-		static DWORD HandleClient(LPVOID);
+		//static DWORD HandleClient(LPVOID);
 		Network::TCPSocket* sock;
 		
 		

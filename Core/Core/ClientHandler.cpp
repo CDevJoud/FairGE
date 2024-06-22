@@ -13,18 +13,17 @@ namespace ugr::Core
 	bool ClientHandler::IsDisconnected() const
 	{
 		if(this)
-			return (this->sock->m_sock == INVALID_SOCKET);
+			return (this->sock->GetNativeSocket() == INVALID_SOCKET);
 	}
 
 	void ClientHandler::StartUpThread()
 	{
-		this->hThread = CreateThread(NULL, NULL, HandleClient, this, NULL, NULL);
+		//this->hThread = CreateThread(NULL, NULL, HandleClient, this, NULL, NULL);
 	}
 
-	DWORD ClientHandler::HandleClient(LPVOID lpParam)
+	/*DWORD ClientHandler::HandleClient(LPVOID lpParam)
 	{
 		ClientHandler* ch = reinterpret_cast<ClientHandler*>(lpParam);
-		
 		do
 		{
 			Network::Packet packet;
@@ -42,6 +41,11 @@ namespace ugr::Core
 			packet = buffer;
 			packet.UnpackWithFormat(&HandShacke, "Int32 Int32 RString Int16 Int32");
 
+			if (HandShacke.State == 2)
+			{
+				ch->sock->Disconnect();
+				ch->status = Disconnected;
+			}
 			packet.Clear();
 			buffer.clear();
 
@@ -80,5 +84,25 @@ namespace ugr::Core
 		} while (!ch->IsDisconnected());
 		Logger::Msg("Client Disconnected!");
 		return 0;
-	}
+	}*/
+	/*DWORD WINAPI ClientHandler::HandleClient(LPVOID lpParam)
+	{
+		ClientHandler* ch = reinterpret_cast<ClientHandler*>(lpParam);
+		auto& stat = ch->status;
+		struct
+		{
+			Int32 ID, ProVersion;
+			RString Ip;
+			Int32 Port, State;
+		}HandShacke;
+		do
+		{
+			Network::Packet p(128);
+			stat = ch->sock->Receive(p);
+			p.UnpackWithFormat(&HandShacke, "Int32 Int32 RString Int16 Int32");
+
+		} while (!ch->IsDisconnected());
+		Logger::Msg("Client Disconnected!");
+		return 250;
+	}*/
 }
