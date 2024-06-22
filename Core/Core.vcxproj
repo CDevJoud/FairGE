@@ -76,6 +76,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -90,6 +91,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -129,6 +131,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Core\ClientVersionResolver.cpp" />
     <ClCompile Include="Core\ClientHandler.cpp" />
     <ClCompile Include="Debugger\Logger.cpp" />
     <ClCompile Include="Core\Gateway.cpp" />
@@ -137,9 +140,12 @@
     <ClCompile Include="Network\Socket.cpp" />
     <ClCompile Include="Network\TCPSocket.cpp" />
     <ClCompile Include="Network\TCPServer.cpp" />
+    <ClCompile Include="Properties.cpp" />
+    <ClCompile Include="Core\Server.cpp" />
     <ClCompile Include="Utility.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Core\ClientVersionResolver.hpp" />
     <ClInclude Include="Core\ClientHandler.hpp" />
     <ClInclude Include="Definitions.hpp" />
     <ClInclude Include="Debugger\Logger.hpp" />
@@ -152,6 +158,8 @@
     <ClInclude Include="Network\Socket.hpp" />
     <ClInclude Include="Network\TCPSocket.hpp" />
     <ClInclude Include="Network\TCPServer.hpp" />
+    <ClInclude Include="Properties.hpp" />
+    <ClInclude Include="Core\Server.hpp" />
     <ClInclude Include="Utility.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
