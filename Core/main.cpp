@@ -1,14 +1,9 @@
 #pragma comment(lib, "Ws2_32.lib")
-#include "Definitions.hpp"
-#include "Network/TCPServer.hpp"
-#include "Debugger/Logger.hpp"
-#include <Windows.h>
-#include "Core/Gateway.hpp"
-using namespace ugr;
-using namespace ugr::Debugger;
+#include "Core/Server.hpp"
+using namespace ugr::Core;
 
 int main()
 {
-	Core::Gateway gw;
-	gw.Run();
+	Server FairGEServer;
+	FairGEServer.Run();
 }
