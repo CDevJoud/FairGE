@@ -128,7 +128,7 @@ namespace ugr::Network
 	}*/
 
 	void Packet::UnpackWithFormat(void* data, AString format) {
-		Int32 packetsize = GetInt32();
+		this->packsize = GetInt32();
 		Byte* bData = reinterpret_cast<Byte*>(data);
 		std::istringstream iss(format);
 		std::vector<AString> cmd;
@@ -167,6 +167,8 @@ namespace ugr::Network
 				bIndex += sizeof(Int32);
 			}
 		}
+		this->data.erase(this->data.begin(), this->data.begin() + this->packsize + 1);
+		this->readPos = 0;
 	}
 
 	void Packet::Build()
@@ -208,6 +210,11 @@ namespace ugr::Network
 		return this->isValid;
 	}
 
+	Packet::Packet(Uint64 buffersize)
+	{
+		this->data.resize(buffersize);
+	}
+
 	Packet::Packet(AString str)
 	{
 		this->data.insert(this->data.end(), str.begin(), str.end());
@@ -235,19 +242,29 @@ namespace ugr::Network
 		this->isValid = true;
 	}
 
-	const void* Packet::GetData() const
+	const void* Packet::GetBufferData() const
 	{
 		return !this->data.empty() ? this->data.data() : nullptr;
 	}
 
-	Uint64 Packet::GetDataSize() const
+	Uint64 Packet::GetBufferSize() const
 	{
 		return this->data.size();
+	}
+
+	Uint64 Packet::GetPacketSize() const
+	{
+		return this->packsize;
 	}
 
 	bool Packet::EndOfPacket() const
 	{
 		return this->readPos >= this->data.size();
+	}
+
+	void Packet::SetBufferDataSize(Uint64 size)
+	{
+		this->data.resize(size);
 	}
 
 	Packet::operator bool() const

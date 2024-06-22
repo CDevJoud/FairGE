@@ -2,14 +2,32 @@
 #include "..\Utility.hpp"
 #include "..\Debugger\Logger.hpp"
 #include <vector>
-
+#define HANDSHACKE_LAYOUT_FORMAT "Int32 Int32 RString Int16 Int32"
+#define LOGINSTART_LAYOUT_FORMAT "Int32 RString Int32"
 
 namespace ugr::Network
 {
 	using namespace Debugger;
 	class Packet
 	{
+		//Packets Structures
 	public:
+#pragma pack(push, 1)
+		struct LoginStart
+		{
+			Int32 ID;
+			RString Name;
+			Int32 UUID;
+		};
+#pragma pack(pop)
+		struct HandShacke
+		{
+			Int32 ID, ProtocolVersionNumber;
+			RString IP;
+			Int32 UnusedPort, NextState;
+		};
+	public:
+		Packet(Uint64 buffersize);
 		Packet() = default;
 		Packet(AString str);
 
@@ -20,11 +38,13 @@ namespace ugr::Network
 		Uint64 GetReadPosition() const;
 
 		void Clear();
-		const void* GetData() const;
+		const void* GetBufferData() const;
 
-		Uint64 GetDataSize() const;
-
+		Uint64 GetBufferSize() const;
+		Uint64 GetPacketSize() const;
 		bool EndOfPacket() const;
+
+		void SetBufferDataSize(Uint64 size);
 
 		explicit operator bool() const;
 		
@@ -48,7 +68,7 @@ namespace ugr::Network
 	private:
 		bool CheckSize(Uint64 size);
 		std::vector<Byte> data;
-		Uint64 readPos = 0, sendPos = 0;
+		Uint64 readPos = 0, sendPos = 0, packsize = 0;
 		bool isValid = true;
 	};
 	inline Int32 Packet::GetInt32(Int32 bytes)
