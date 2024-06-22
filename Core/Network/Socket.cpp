@@ -80,6 +80,10 @@ namespace ugr::Network
 			}
 		}
 	}
+    SOCKET Socket::GetNativeSocket() const
+    {
+        return this->m_sock;
+    }
 	Socket::Socket(Type type) : m_type(type), m_sock(INVALID_SOCKET)
 	{
 
