@@ -1,4 +1,5 @@
 #pragma once
+#include "Services/CSM/GGateway.hpp"
 #include "Gateway.hpp"
 
 namespace ugr::Core
@@ -23,7 +24,11 @@ namespace ugr::Core
 		void InitMinecraftServer();
 		void InitCSMServer();
 		void InitHTTPServer();
-		static Gateway* MCGateway;
+		static Gateway* MMCGateway;
+		static CSM::GGateway* CSMGateway;
 		static HANDLE hMCThread;
+		static HANDLE hCSMThread;
+
+		
 	};
 }

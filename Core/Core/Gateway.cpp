@@ -2,6 +2,7 @@
 #include <vector>
 //#include "ClientHandler.hpp"
 #include "..\Debugger\Logger.hpp"
+#include "Gateway.hpp"
 
 namespace ugr::Core
 {
@@ -54,3 +55,4 @@ namespace ugr::Core
 		return 0;
 	}
 }
+

@@ -1,14 +1,23 @@
 #include "Server.hpp"
 #include "..\Utility.hpp"
-#include <Windows.h>
+
 namespace ugr::Core
 {
 	HANDLE Server::hMCThread;
-	Gateway* Server::MCGateway = new Gateway;
-	static DWORD __stdcall MCServerThread(LPVOID lpParam)
+	HANDLE Server::hCSMThread;
+	Gateway* Server::MMCGateway = new Gateway;
+	CSM::GGateway* Server::CSMGateway = new CSM::GGateway;
+	
+	DWORD __stdcall MMCServerThread(LPVOID lpParam)
 	{
-		Gateway* gy = reinterpret_cast<Gateway*>(lpParam);
+		Core::Gateway* gy = reinterpret_cast<Core::Gateway*>(lpParam);
 		gy->Run();
+		return 0;
+	}
+	static DWORD __stdcall CSMServerThread(LPVOID lpParam)
+	{
+		CSM::GGateway* gy = reinterpret_cast<CSM::GGateway*>(lpParam);
+		gy->Start();
 		return 0;
 	}
 	Server::Server()
@@ -20,7 +29,7 @@ namespace ugr::Core
 	}
 	Server::~Server()
 	{
-		delete this->MCGateway;
+		delete this->MMCGateway;
 		CloseHandle(this->hMCThread);
 	}
 	void Server::InitServerProperties()
@@ -57,8 +66,11 @@ namespace ugr::Core
 	}
 	void Server::Run()
 	{
-		hMCThread = CreateThread(NULL, NULL, MCServerThread, MCGateway, NULL, NULL);
+		hCSMThread = CreateThread(NULL, NULL, CSMServerThread, CSMGateway, NULL, NULL);
+		hMCThread = CreateThread(NULL, NULL, MMCServerThread, MMCGateway, NULL, NULL);
+		WaitForSingleObject(hCSMThread, INFINITE);
 		WaitForSingleObject(hMCThread, INFINITE);
+		
 	}
 	void Server::Stop()
 	{

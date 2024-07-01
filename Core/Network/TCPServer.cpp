@@ -20,7 +20,7 @@ namespace ugr::Network
 		if (bind(this->m_sock, reinterpret_cast<sockaddr*>(&addr), sizeof(addr)) == -1)
 		{
 			String msg = "Failed to bind to port ";
-			msg.append(std::to_wstring(25565));
+			msg.append(std::to_wstring(port));
 			Logger::Fatal(msg);
 			return Error;
 		}

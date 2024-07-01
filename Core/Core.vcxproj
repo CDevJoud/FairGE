@@ -131,10 +131,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Core\Services\CSM\Client.cpp" />
     <ClCompile Include="Core\ClientVersionResolver.cpp" />
     <ClCompile Include="Core\ClientHandler.cpp" />
     <ClCompile Include="Debugger\Logger.cpp" />
     <ClCompile Include="Core\Gateway.cpp" />
+    <ClCompile Include="Core\Services\CSM\GGateway.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Network\Packet.cpp" />
     <ClCompile Include="Network\Socket.cpp" />
@@ -145,11 +147,13 @@
     <ClCompile Include="Utility.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Core\Services\CSM\Client.hpp" />
     <ClInclude Include="Core\ClientVersionResolver.hpp" />
     <ClInclude Include="Core\ClientHandler.hpp" />
     <ClInclude Include="Definitions.hpp" />
     <ClInclude Include="Debugger\Logger.hpp" />
     <ClInclude Include="Core\Gateway.hpp" />
+    <ClInclude Include="Core\Services\CSM\GGateway.hpp" />
     <ClInclude Include="json.hpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
